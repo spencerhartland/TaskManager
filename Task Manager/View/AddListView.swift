@@ -18,7 +18,15 @@ struct AddListView: View {
     @Binding var addingList: Bool
     
     var body: some View {
-        SecondaryTitleView("Add List", addingTask: $addingTask, addingList: $addingList)
+        VStack {
+            SecondaryTitleView("Add List", addingTask: $addingTask, addingList: $addingList)
+                .foregroundColor(Color(white:0.15))
+            SimpleTextField("LIST", prompt: "What would you like to call this list?")
+                .padding(.top, 32)
+            Spacer()
+        }
+        .padding([.top, .bottom], 48)
+        .background(Color(white: 0.925))
     }
 }
 

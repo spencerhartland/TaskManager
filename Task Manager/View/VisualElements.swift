@@ -164,13 +164,43 @@ struct SecondaryTitleView: View {
                 Image(systemName: "xmark.square.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(height: 32)
+                    .frame(height: 36)
                 Text(title)
-                    .font(.system(size: 36, weight: .semibold))
+                    .font(.system(size: 28, weight: .semibold))
                 Spacer()
             }
         }
         .padding([.leading, .trailing], 24)
+    }
+}
+
+struct SimpleTextField: View {
+    private let titleText: String
+    private let promptText: String
+    @State private var userText: String = ""
+    
+    init(_ title: String, prompt: String) {
+        self.titleText = title
+        self.promptText = prompt
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(titleText)
+                .font(.system(size: 16, weight: .bold, design: .monospaced))
+            ZStack {
+                Color.white
+                TextField(text: $userText, prompt: Text(promptText), label: {
+                    Text(promptText)
+                })
+                .padding([.leading, .trailing], 16) // Space around prompt text
+            }
+            .frame(height: 48)
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(8)
+            .shadow(color: .init(white: 0.85), radius: 6)
+        }
+        .padding([.leading, .trailing], 24) // Space around TextField and title
     }
 }
 
@@ -179,6 +209,8 @@ struct VisualElements_Previews: PreviewProvider {
 //        TitleView("Dashboard", systemImageName: "list.bullet.rectangle.fill", addingTask: .constant(false), addingList: .constant(false))
 //        TimeBasedTaskList(.today)
 //        TimeBasedTaskList(.endOfWeek)
-        SecondaryTitleView("Add List", addingTask: .constant(false), addingList: .constant(true))
+//        SecondaryTitleView("Add List", addingTask: .constant(false), addingList: .constant(true))
+        SimpleTextField("LIST", prompt: "What would you like to call this list?")
+        SimpleTextField("TASK", prompt: "What do you have to do?")
     }
 }
