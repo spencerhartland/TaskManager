@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1000,
+        "timeframe": "today",
+        "text": "Listen to Grimes",
+        "details": "",
+        "completed": false
+    },
+    {
+        "id": 1001,
+        "timeframe": "today",
+        "text": "Go grocery shopping",
+        "details": "Go to Sprouts and Target. Check your shopping list.",
+        "completed": false
+    },
+    {
+        "id": 1002,
+        "timeframe": "endOfWeek",
+        "text": "Buy crypto + transfer to wallet",
+        "details": "Buy Solana and Doge. Transfer crypto from last week to cold wallet.",
+        "completed": false
+    }
+]
