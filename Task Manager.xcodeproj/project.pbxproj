@@ -10,6 +10,7 @@
 		0055662A282BB1A800916582 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00556629282BB1A800916582 /* CloudKit.framework */; };
 		0055662C282D0E8300916582 /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055662B282D0E8300916582 /* AddListView.swift */; };
 		0055662E282D0E9100916582 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055662D282D0E9100916582 /* AddTaskView.swift */; };
+		00556631282D1ED100916582 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00556630282D1ED100916582 /* List.swift */; };
 		00BA17EC282B592C00F31499 /* Task_ManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BA17EB282B592C00F31499 /* Task_ManagerApp.swift */; };
 		00BA17EE282B592C00F31499 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BA17ED282B592C00F31499 /* ContentView.swift */; };
 		00BA17F0282B593000F31499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00BA17EF282B593000F31499 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 		00556629282BB1A800916582 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		0055662B282D0E8300916582 /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		0055662D282D0E9100916582 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		00556630282D1ED100916582 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		00BA17E8282B592C00F31499 /* Task Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Task Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00BA17EB282B592C00F31499 /* Task_ManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task_ManagerApp.swift; sourceTree = "<group>"; };
 		00BA17ED282B592C00F31499 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				00BA17FB282B69AA00F31499 /* Task.swift */,
+				00556630282D1ED100916582 /* List.swift */,
 				00BA17FD282B75A300F31499 /* ModelData.swift */,
 				00BA1800282B78C700F31499 /* taskData.json */,
 			);
@@ -187,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00BA17FC282B69AA00F31499 /* Task.swift in Sources */,
+				00556631282D1ED100916582 /* List.swift in Sources */,
 				0055662E282D0E9100916582 /* AddTaskView.swift in Sources */,
 				00BA17EE282B592C00F31499 /* ContentView.swift in Sources */,
 				0055662C282D0E8300916582 /* AddListView.swift in Sources */,
