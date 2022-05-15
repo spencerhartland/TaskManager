@@ -6,11 +6,21 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct TaskList {
-    
+struct SFSymbol: Hashable, Codable {
+    public var name: String = ""
 }
 
-struct ItemList {
+class TaskList {
+    public var name: String
+    public var symbol: SFSymbol
     
+    private var tasks: [Task]
+    
+    init(_ name: String, symbol: SFSymbol) {
+        self.name = name
+        self.symbol = symbol
+        self.tasks = [Task]()
+    }
 }

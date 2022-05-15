@@ -16,14 +16,16 @@ struct AddTaskView: View {
     ///
     /// This value is used to determine which view is being presented.
     @Binding var addingList: Bool
+    @State var taskName: String = ""
     
     var body: some View {
         VStack {
             SecondaryTitleView("Add Task", addingTask: $addingTask, addingList: $addingList)
                 .foregroundColor(Color(white:0.15))
-            SimpleTextField("TASK", prompt: "What do you have to do?")
+            SimpleTextField("TASK", prompt: "What do you have to do?", userText: $taskName)
                 .padding(.top, 32)
             Spacer()
+            Text(taskName)
         }
         .padding([.top, .bottom], 48)
         .background(Color(white: 0.925))

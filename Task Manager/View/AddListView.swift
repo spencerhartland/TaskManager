@@ -16,16 +16,25 @@ struct AddListView: View {
     ///
     /// This value is used to determine which view is being presented.
     @Binding var addingList: Bool
+    @State var listName: String = ""
+    @State var listSymbol: SFSymbol = SFSymbol(name: "nil")
     
     var body: some View {
         VStack {
             SecondaryTitleView("Add List", addingTask: $addingTask, addingList: $addingList)
                 .foregroundColor(Color(white:0.15))
-            SimpleTextField("LIST", prompt: "What would you like to call this list?")
+            SimpleTextField("LIST", prompt: "What would you like to call this list?", userText: $listName)
                 .padding(.top, 32)
+            SymbolSelectionView(selectedSymbol: $listSymbol)
+                .padding(.top, 48)
             Spacer()
+            LargeButton(action: {
+                let testList = TaskList(listName, symbol: listSymbol)
+                print(testList.name)
+                print(testList.symbol.name)
+            })
         }
-        .padding([.top, .bottom], 48)
+        .padding([.top], 48)
         .background(Color(white: 0.925))
     }
 }

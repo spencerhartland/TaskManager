@@ -1,71 +1,94 @@
-{
+[
     {
+        "isSelected": false,
         "name": "pencil.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "calendar.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "graduationcap.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "person.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "doc.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "tray.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "moon.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "heart.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "star.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "flag.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "bell.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "bag.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "cart.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "creditcard.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "briefcase.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "house.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "shippingbox.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "clock.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "books.vertical.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "figure.walk.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "fork.knife.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "building.2.crop.circle.fill"
     },
     {
+        "isSelected": false,
         "name": "chart.line.uptrend.xyaxis.circle.fill"
     }
-}
+]

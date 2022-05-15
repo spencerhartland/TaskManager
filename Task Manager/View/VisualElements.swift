@@ -15,8 +15,6 @@ struct TitleView: View {
     private var title: String = ""
     /// The name of an SF Symbol that represents the page's content.
     private var viewIconName: String = ""
-    /// An SF Symbol: a plus sign within a filled square.
-    private var addSymbol = Image(systemName: "plus.square.fill")
     /// A boolean value indicating whether or not to present the floating action menu.
     @State private var isExpanded = false
     /// A boolean value indicating whether or not the user is currently adding a **task**.
@@ -41,30 +39,15 @@ struct TitleView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 6) {
-                Image(systemName: viewIconName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 48)
-                Text(title)
-                    .font(.system(size: 36, weight: .semibold))
-            }
-            Spacer()
-            Menu {
-                Button("Add Task", action: {
-                    addingTask = true
-                })
-                Button("Add List", action: {
-                    addingList = true
-                })
-            } label: {
-                addSymbol
-                    .resizable()
-                    .frame(width: 32, height: 32)
-            }
+        VStack(alignment: .leading, spacing: 6) {
+            Image(systemName: viewIconName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48)
+            Text(title)
+                .font(.system(size: 36, weight: .semibold))
         }
-        .padding([.leading, .trailing], 24)
+        .padding(.leading, 24)
     }
 }
 
@@ -98,7 +81,7 @@ struct TimeBasedTaskList: View {
                     .font(.system(size: 20, weight: .bold, design: .monospaced))
                     .padding(.leading, 18.0)
             }
-            List(tasks) { task in
+            List(DataHandler.tasks) { task in
                 if task.timeframe == self.timeframe {
                     ListItemView(task)
                         .listRowSeparator(.hidden)
@@ -177,11 +160,12 @@ struct SecondaryTitleView: View {
 struct SimpleTextField: View {
     private let titleText: String
     private let promptText: String
-    @State private var userText: String = ""
+    @Binding public var userText: String
     
-    init(_ title: String, prompt: String) {
+    init(_ title: String, prompt: String, userText: Binding<String>) {
         self.titleText = title
         self.promptText = prompt
+        self._userText = userText
     }
     
     var body: some View {
@@ -190,6 +174,8 @@ struct SimpleTextField: View {
                 .font(.system(size: 16, weight: .bold, design: .monospaced))
             ZStack {
                 Color.white
+                    .shadow(color: .init(white: 0.85), radius: 4)
+                    .cornerRadius(8)
                 TextField(text: $userText, prompt: Text(promptText), label: {
                     Text(promptText)
                 })
@@ -197,20 +183,79 @@ struct SimpleTextField: View {
             }
             .frame(height: 48)
             .aspectRatio(contentMode: .fit)
-            .cornerRadius(8)
-            .shadow(color: .init(white: 0.85), radius: 6)
         }
         .padding([.leading, .trailing], 24) // Space around TextField and title
     }
 }
 
+struct SymbolSelectionView: View {
+    let columns = [ GridItem(.adaptive(minimum: 48)) ]
+    @Binding public var selectedSymbol: SFSymbol
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("SYMBOL")
+                .font(.system(size: 16, weight: .bold, design: .monospaced))
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(DataHandler.symbols, id: \.self) { symbol in
+                    SymbolButton(symbol: symbol, selectedSymbol: $selectedSymbol)
+                }
+            }
+        }
+        .padding([.leading, .trailing], 24)
+    }
+}
+
+struct SymbolButton: View {
+    var symbol: SFSymbol
+    @Binding var selectedSymbol: SFSymbol
+    
+    var body: some View {
+        Button {
+            selectedSymbol = symbol
+        } label: {
+            ZStack {
+                symbol.name == selectedSymbol.name ? Color.init(white: 0.15) : Color.white
+                Image(systemName: symbol.name)
+                    .resizable()
+                    .padding(6)
+                    .foregroundColor((symbol.name == selectedSymbol.name ? Color.white : Color.init(white: 0.15)))
+            }
+            .frame(height: 48)
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(8)
+            .shadow(color: .init(white: 0.85), radius: 6)
+        }
+    }
+}
+
+struct LargeButton: View {
+    let action: () -> Void
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            ZStack {
+                Color.init(white: 0.15)
+                    .frame(height: 50)
+                    .cornerRadius(10)
+                    .shadow(color: .init(white: 0.45), radius: 6)
+                Image(systemName: "checkmark.square.fill")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+            }
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .padding([.leading, .trailing], 36)
+            .foregroundColor(.white)
+        }
+    }
+}
+
 struct VisualElements_Previews: PreviewProvider {
     static var previews: some View {
-//        TitleView("Dashboard", systemImageName: "list.bullet.rectangle.fill", addingTask: .constant(false), addingList: .constant(false))
-//        TimeBasedTaskList(.today)
-//        TimeBasedTaskList(.endOfWeek)
-//        SecondaryTitleView("Add List", addingTask: .constant(false), addingList: .constant(true))
-        SimpleTextField("LIST", prompt: "What would you like to call this list?")
-        SimpleTextField("TASK", prompt: "What do you have to do?")
+        LargeButton(action: {
+            print("Hello!")
+        })
     }
 }

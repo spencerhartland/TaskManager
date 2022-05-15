@@ -23,9 +23,9 @@ struct Task_ManagerApp: App {
             if addingList {
                 AddListView(addingTask: $addingTask, addingList: $addingList)
             } else if addingTask {
-                AddListView(addingTask: $addingTask, addingList: $addingList)
+                AddTaskView(addingTask: $addingTask, addingList: $addingList)
             } else {
-                ContentView(addingTask: $addingTask, addingList: $addingList)
+                DashboardView(addingTask: $addingTask, addingList: $addingList)
             }
         }
     }
