@@ -35,7 +35,6 @@ struct AddListView: View {
             })
         }
         .padding([.top], 48)
-        .background(Color(white: 0.925))
     }
 }
 

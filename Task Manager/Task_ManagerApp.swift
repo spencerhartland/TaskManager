@@ -22,10 +22,13 @@ struct Task_ManagerApp: App {
         WindowGroup {
             if addingList {
                 AddListView(addingTask: $addingTask, addingList: $addingList)
+                    .background(Color(white: 0.925))
             } else if addingTask {
                 AddTaskView(addingTask: $addingTask, addingList: $addingList)
+                    .background(Color(white: 0.925))
             } else {
                 DashboardView(addingTask: $addingTask, addingList: $addingList)
+                    .background(Color(white: 0.925))
             }
         }
     }

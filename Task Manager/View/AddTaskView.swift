@@ -28,7 +28,6 @@ struct AddTaskView: View {
             Text(taskName)
         }
         .padding([.top, .bottom], 48)
-        .background(Color(white: 0.925))
     }
 }
 

@@ -47,7 +47,6 @@ struct TitleView: View {
             Text(title)
                 .font(.system(size: 36, weight: .semibold))
         }
-        .padding(.leading, 24)
     }
 }
 
@@ -61,8 +60,9 @@ struct TimeBasedTaskList: View {
     private var title: String = ""
     /// The timeframe in which the tasks in this list should be completed.
     private var timeframe: timeframe
+    @Binding var tasks: [Task]
     
-    init(_ tf: timeframe) {
+    init(_ tf: timeframe, tasks: Binding<[Task]>) {
         switch tf {
         case .today:
             self.title = "TODAY"
@@ -72,23 +72,22 @@ struct TimeBasedTaskList: View {
             self.title = "END OF MONTH"
         }
         self.timeframe = tf
+        self._tasks = tasks
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            VStack {
-                Text(title)
-                    .font(.system(size: 20, weight: .bold, design: .monospaced))
-                    .padding(.leading, 18.0)
-            }
-            List(DataHandler.tasks) { task in
-                if task.timeframe == self.timeframe {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                .padding(.bottom, 4)
+            ForEach(tasks) { task in
+                // "Today" list should show complete and incomplete
+                // tasks. Other lists should hide completed tasks.
+                if (task.timeframe == self.timeframe) && (task.timeframe == .today || !task.completed) {
                     ListItemView(task)
                         .listRowSeparator(.hidden)
                 }
             }
-            .listStyle(.plain)
-            .offset(y: -8)
         }
     }
 }
@@ -197,7 +196,7 @@ struct SymbolSelectionView: View {
             Text("SYMBOL")
                 .font(.system(size: 16, weight: .bold, design: .monospaced))
             LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(DataHandler.symbols, id: \.self) { symbol in
+                ForEach(TaskStore.symbols, id: \.self) { symbol in
                     SymbolButton(symbol: symbol, selectedSymbol: $selectedSymbol)
                 }
             }
@@ -255,7 +254,7 @@ struct LargeButton: View {
 struct VisualElements_Previews: PreviewProvider {
     static var previews: some View {
         LargeButton(action: {
-            print("Hello!")
+            print("Hello, world!")
         })
     }
 }

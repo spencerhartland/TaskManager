@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct DataHandler {
-    static var tasks: [Task] = load("taskData.json")
+class TaskStore: ObservableObject {
+    @Published var tasks: [Task] = load("taskData.json")
     static var symbols: [SFSymbol] = load("listSymbols.json")
     
     static func load<T: Decodable>(_ filename: String) -> T {
@@ -31,5 +32,25 @@ struct DataHandler {
         } catch {
             fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
         }
+    }
+    
+    private static func fileURL() throws -> URL {
+        try FileManager.default.url(for: .documentDirectory,
+                                    in: .userDomainMask,
+                                    appropriateFor: nil,
+                                    create: false)
+            .appendingPathComponent("tasks.data")
+        
+    }
+    
+    // TODO: Add load and save functions
+    
+    func hasTasks(for tf: timeframe) -> Bool {
+        for tsk in tasks {
+            if tsk.timeframe == tf {
+                return true
+            }
+        }
+        return false
     }
 }

@@ -16,11 +16,10 @@ struct DashboardView: View {
     ///
     /// This value is used to determine which view is being presented.
     @Binding var addingList: Bool
-    /// An SF Symbol: a plus sign within a filled square.
-    private let addSymbol = Image(systemName: "plus.square.fill")
+    @StateObject private var store = TaskStore()
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack(alignment: .top) {
                 TitleView("Dashboard", systemImageName: "list.bullet.rectangle.fill", addingTask: $addingTask, addingList: $addingList)
                 Spacer()
@@ -32,20 +31,36 @@ struct DashboardView: View {
                         addingList = true
                     })
                 } label: {
-                    addSymbol
+                    Image(systemName: "plus.square.fill")
                         .resizable()
                         .frame(width: 32, height: 32)
                 }
                 .padding(.trailing, 24)
             }
             .padding(.top, 16)
-            
-            TimeBasedTaskList(.today)
-                .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
+            VStack(alignment: .leading, spacing: 16) {
+                if store.hasTasks(for: .today) {
+                    /// A list dispaying only tasks with the specified  completion timeline
+                    ///
+                    /// This list displays tasks to be completed "today." The "today" list is unique
+                    /// in that completed tasks are not filtered out. This provides a satisfying
+                    /// visual of all that the user accomplished in the day.
+                    TimeBasedTaskList(.today, tasks: $store.tasks)
+                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
+                }
+                if store.hasTasks(for: .endOfWeek) {
+                    TimeBasedTaskList(.endOfWeek, tasks: $store.tasks)
+                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
+                }
+                if store.hasTasks(for: .endOfMonth) {
+                    TimeBasedTaskList(.endOfMonth, tasks: $store.tasks)
+                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
+                }
+            }
             Spacer()
         }
         .foregroundColor(Color(white:0.15))
-        .background(Color(white: 0.925))
+        .padding(.leading, 24)
     }
 }
 
