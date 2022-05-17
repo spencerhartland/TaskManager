@@ -17,6 +17,9 @@ struct Task_ManagerApp: App {
     ///
     /// This value is used to determine which view is being presented.
     @State private var addingList = false
+    /// Local storage for tasks
+    @StateObject private var store = TaskStore()
+    
     
     var body: some Scene {
         WindowGroup {
@@ -27,8 +30,24 @@ struct Task_ManagerApp: App {
                 AddTaskView(addingTask: $addingTask, addingList: $addingList)
                     .background(Color(white: 0.925))
             } else {
-                DashboardView(addingTask: $addingTask, addingList: $addingList)
+                DashboardView($addingTask, $addingList, $store.tasks) {
+                    TaskStore.save(tasks: store.tasks) { result in
+                        if case .failure(let error) = result {
+                            fatalError(error.localizedDescription)
+                        }
+                    }
+                }
                     .background(Color(white: 0.925))
+                    .onAppear { // Load data on app launch
+                        TaskStore.load { result in
+                            switch result {
+                            case .failure(let error):
+                                fatalError(error.localizedDescription)
+                            case .success(let tasks):
+                                store.tasks = tasks
+                            }
+                        }
+                    }
             }
         }
     }

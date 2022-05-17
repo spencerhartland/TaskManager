@@ -16,7 +16,18 @@ struct DashboardView: View {
     ///
     /// This value is used to determine which view is being presented.
     @Binding var addingList: Bool
-    @StateObject private var store = TaskStore()
+    @Binding private var tasks: [Task]
+    /// Used to monitor for inactive state
+    @Environment(\.scenePhase) private var scenePhase
+    /// An action to save task data, to be executed when entering the inactive state.
+    let saveAction: () -> Void
+    
+    init(_ addingTask: Binding<Bool>,_ addingList: Binding<Bool>,_ tasks: Binding<[Task]>,_ completion: @escaping () -> Void) {
+        self._addingList = addingList
+        self._addingTask = addingTask
+        self._tasks = tasks
+        self.saveAction = completion
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -39,21 +50,21 @@ struct DashboardView: View {
             }
             .padding(.top, 16)
             VStack(alignment: .leading, spacing: 16) {
-                if store.hasTasks(for: .today) {
+                if tasksExist(withTimeframe: .today) {
                     /// A list dispaying only tasks with the specified  completion timeline
                     ///
                     /// This list displays tasks to be completed "today." The "today" list is unique
                     /// in that completed tasks are not filtered out. This provides a satisfying
                     /// visual of all that the user accomplished in the day.
-                    TimeBasedTaskList(.today, tasks: $store.tasks)
+                    TimeBasedTaskList(.today, tasks: $tasks)
                         .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
                 }
-                if store.hasTasks(for: .endOfWeek) {
-                    TimeBasedTaskList(.endOfWeek, tasks: $store.tasks)
+                if tasksExist(withTimeframe: .endOfWeek) {
+                    TimeBasedTaskList(.endOfWeek, tasks: $tasks)
                         .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
                 }
-                if store.hasTasks(for: .endOfMonth) {
-                    TimeBasedTaskList(.endOfMonth, tasks: $store.tasks)
+                if tasksExist(withTimeframe: .endOfMonth) {
+                    TimeBasedTaskList(.endOfMonth, tasks: $tasks)
                         .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 8))
                 }
             }
@@ -61,11 +72,23 @@ struct DashboardView: View {
         }
         .foregroundColor(Color(white:0.15))
         .padding(.leading, 24)
+        .onChange(of: scenePhase) { phase in
+            if phase == .inactive { saveAction() }
+        }
+    }
+    
+    private func tasksExist(withTimeframe tf: timeframe) -> Bool {
+        for tsk in tasks {
+            if tsk.timeframe == tf {
+                return true
+            }
+        }
+        return false
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardView(addingTask: .constant(false), addingList: .constant(false))
+        Text("um")
     }
 }

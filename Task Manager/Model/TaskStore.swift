@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 class TaskStore: ObservableObject {
-    @Published var tasks: [Task] = load("taskData.json")
-    static var symbols: [SFSymbol] = load("listSymbols.json")
+    @Published var tasks: [Task] = []
+    static var symbols: [SFSymbol] = loadJSON("listSymbols.json")
     
-    static func load<T: Decodable>(_ filename: String) -> T {
+    static func loadJSON<T: Decodable>(_ filename: String) -> T {
         let data: Data
         
         guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
@@ -43,14 +43,42 @@ class TaskStore: ObservableObject {
         
     }
     
-    // TODO: Add load and save functions
-    
-    func hasTasks(for tf: timeframe) -> Bool {
-        for tsk in tasks {
-            if tsk.timeframe == tf {
-                return true
+    static func load(completion: @escaping (Result<[Task], Error>) -> Void) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let fileURL = try fileURL()
+                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
+                    DispatchQueue.main.async {
+                        completion(.success([]))
+                    }
+                    return
+                }
+                let storedTasks = try JSONDecoder().decode([Task].self, from: file.availableData)
+                DispatchQueue.main.async {
+                    completion(.success(storedTasks))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
-        return false
+    }
+    
+    static func save(tasks: [Task], completion: @escaping (Result<Int, Error>) -> Void) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let data = try JSONEncoder().encode(tasks)
+                let outfile = try fileURL()
+                try data.write(to: outfile)
+                DispatchQueue.main.async {
+                    completion(.success(tasks.count))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }
     }
 }
